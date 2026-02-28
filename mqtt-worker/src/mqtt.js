@@ -2,7 +2,7 @@ const mqtt = require('mqtt');
 const { upsertDevice, insertMetric } = require('./db');
 require('dotenv').config();
 
-const brokerUrl = process.env.MQTT_BROKER || 'mqtt://localhost:1883';
+const brokerUrl = process.env.MQTT_BROKER_URL || 'mqtt://localhost:1883';
 const username = process.env.MQTT_USER || 'admin';
 const password = process.env.MQTT_PASSWORD || 'public';
 

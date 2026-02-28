@@ -42,29 +42,31 @@ CREATE INDEX idx_devices_uid ON devices(uid);
 
 -- Device Metrics (Hypertable)
 CREATE TABLE IF NOT EXISTS device_metrics (
-    time TIMESTAMP WITH TIME ZONE NOT NULL,
+    id BIGSERIAL,
     device_id UUID NOT NULL REFERENCES devices(id) ON DELETE CASCADE,
-    temperature DECIMAL(5,2),
-    humidity DECIMAL(5,2),
-    battery_voltage DECIMAL(5,2),
-    battery_capacity DECIMAL(5,2),
-    ac_input BOOLEAN,
-    inverter_status BOOLEAN,
-    door1 BOOLEAN,
-    door2 BOOLEAN,
-    door3 BOOLEAN,
-    water_leak BOOLEAN,
-    fire BOOLEAN,
-    relay BOOLEAN,
+    temperature FLOAT,
+    humidity FLOAT,
+    battery_voltage FLOAT,
+    ac_input FLOAT,
+    battery_capacity INT,
+    inverter_status INT,
+    door1 INT,
+    door2 INT,
+    door3 INT,
+    water_leak INT,
+    fire INT,
+    relay INT,
     internet_status BOOLEAN,
-    mqtt_status BOOLEAN
+    mqtt_status BOOLEAN,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL,
+    PRIMARY KEY (id, created_at)
 );
 
 -- Create TimescaleDB Hypertable
-SELECT create_hypertable('device_metrics', 'time');
+SELECT create_hypertable('device_metrics', 'created_at');
 
 -- Index for efficient querying by device_id and time
-CREATE INDEX idx_device_metrics_device_time ON device_metrics (device_id, time DESC);
+CREATE INDEX idx_device_metrics_device_time ON device_metrics (device_id, created_at DESC);
 
 -- Alert Rules
 CREATE TABLE IF NOT EXISTS alert_rules (

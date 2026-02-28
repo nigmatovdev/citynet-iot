@@ -24,8 +24,8 @@ services:
       EMQX_DASHBOARD__DEFAULT_USERNAME: ${EMQX_ADMIN_USER:-admin}
       EMQX_DASHBOARD__DEFAULT_PASSWORD: ${EMQX_ADMIN_PASSWORD:-public}
     ports:
-      - "1884:1883"   # MQTT TCP (Changed from 1883 to avoid collision)
-      - "8083:8083"   # MQTT over WebSocket
+      - "1884:1883" # MQTT TCP (Changed from 1883 to avoid collision)
+      - "8083:8083" # MQTT over WebSocket
       - "18083:18083" # EMQX Dashboard
     volumes:
       - emqx_data:/opt/emqx/data
@@ -72,6 +72,18 @@ services:
     depends_on:
       - emqx
       - postgres
+    restart: unless-stopped
+
+  simulator:
+    build:
+      context: ./mqtt-worker
+    container_name: citynet_simulator
+    command: node test-publisher.js
+    environment:
+      - MQTT_BROKER_URL=mqtt://emqx:1883
+    depends_on:
+      - emqx
+      - mqtt-worker
     restart: unless-stopped
 
   frontend-app:

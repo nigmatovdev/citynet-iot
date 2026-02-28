@@ -46,7 +46,7 @@ export async function GET(request, { params }) {
 
         // Fetch timeseries data from TimescaleDB
         const metricsResult = await query(
-            'SELECT * FROM device_metrics WHERE device_id = $1 ORDER BY time DESC LIMIT $2',
+            'SELECT * FROM device_metrics WHERE device_id = $1 ORDER BY created_at DESC LIMIT $2',
             [deviceId, limit]
         );
 

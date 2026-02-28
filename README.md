@@ -28,19 +28,24 @@ You will need the following installed:
 
 ### Starting the Platform with Docker
 
-The easiest way to boot up the entire stack—including the database, API, frontend, and MQTT worker—is using Docker Compose:
+The easiest way to boot up the entire stack—including the database, API, frontend, MQTT worker, and the background data simulator—is using Docker Compose:
 
 ```bash
-# Start all services in detached mode
-docker-compose up -d
+# Start all services in detached mode and build images
+docker compose up -d --build
 ```
 
-Once started, the services will be available at their respective ports (e.g., frontend on `http://localhost:4200` and API on `http://localhost:3000`).
+Once started, the services will be available:
+- **Frontend Dashboard:** `http://localhost:80`
+- **Backend API:** `http://localhost:3000`
+- **EMQX MQTT Broker:** `http://localhost:18083` (Admin: admin / public)
+
+The `simulator` container runs automatically in the background to seed the database with telemetry data for 10 devices, varying data for 3 of them so that graph views are fully populated for testing.
 
 To bring down the services and remove the containers:
 
 ```bash
-docker-compose down
+docker compose down
 ```
 
 ---

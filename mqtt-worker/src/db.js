@@ -31,11 +31,11 @@ async function upsertDevice(uid) {
 async function insertMetric(deviceId, payload) {
   const query = `
     INSERT INTO device_metrics (
-      time, device_id, temperature, humidity, battery_voltage, battery_capacity,
+      device_id, temperature, humidity, battery_voltage, battery_capacity,
       ac_input, inverter_status, door1, door2, door3, water_leak, fire, relay,
       internet_status, mqtt_status
     ) VALUES (
-      NOW(), $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15
+      $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15
     );
   `;
   const values = [
