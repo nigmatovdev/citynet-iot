@@ -26,7 +26,7 @@ services:
     ports:
       - "1884:1883" # MQTT TCP (Changed from 1883 to avoid collision)
       - "8083:8083" # MQTT over WebSocket
-      - "18083:18083" # EMQX Dashboard
+      - "18088:18083" # EMQX Dashboard
     volumes:
       - emqx_data:/opt/emqx/data
     restart: unless-stopped
