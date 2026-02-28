@@ -91,7 +91,7 @@ services:
       context: ./frontend-app
     container_name: citynet_frontend
     ports:
-      - "80:80"
+      - "88:80"
     depends_on:
       - api-service
     restart: unless-stopped
