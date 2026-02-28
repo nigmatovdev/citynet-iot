@@ -1,0 +1,19 @@
+/* Force sidenav overrides if Tailwind clashes with Material */
+mat-sidenav {
+    width: 260px;
+}
+
+mat-toolbar {
+    background-color: transparent !important;
+}
+
+/* Make sure active states blend seamlessly */
+.mdc-list-item.mdc-list-item--activated {
+    border-top-right-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+    margin-right: 1rem;
+    margin-left: 0.5rem;
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}

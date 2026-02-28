@@ -1,0 +1,53 @@
+@use '@angular/material' as mat;
+
+// Include the common styles for Angular Material.
+@include mat.core();
+
+// Create default Light theme
+$light-theme: mat.define-theme((color: (theme-type: light,
+                primary: mat.$azure-palette,
+                tertiary: mat.$blue-palette,
+            )));
+
+// Generate default light theme classes
+:root {
+    @include mat.all-component-themes($light-theme);
+    @include mat.system-level-colors($light-theme);
+    @include mat.system-level-typography($light-theme);
+}
+
+$dark-theme: mat.define-theme((color: (theme-type: dark,
+                primary: mat.$green-palette,
+                tertiary: mat.$cyan-palette,
+            )));
+
+// Apply dark theme exclusively inside .citynet-dark
+.citynet-dark {
+    @include mat.all-component-colors($dark-theme);
+    @include mat.system-level-colors($dark-theme);
+}
+
+// Global Tailwind Imports
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+// Basic body resets using Tailwind + Material standard variables
+@layer base {
+    body {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        color: var(--sys-on-surface);
+        background-color: var(--sys-surface);
+    }
+
+    html {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+    }
+}

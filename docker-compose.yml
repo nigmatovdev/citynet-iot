@@ -1,0 +1,90 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: timescale/timescaledb:latest-pg15
+    container_name: citynet_db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-citynet_admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-citynet_secret}
+      POSTGRES_DB: ${POSTGRES_DB:-citynet_iot}
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: unless-stopped
+
+  emqx:
+    image: emqx:5.8.0
+    container_name: citynet_mqtt
+    environment:
+      EMQX_NODE_NAME: "emqx@node1.emqx.io"
+      EMQX_ALLOW_ANONYMOUS: "true" # For dev. In prod, use auth plugin.
+      EMQX_DASHBOARD__DEFAULT_USERNAME: ${EMQX_ADMIN_USER:-admin}
+      EMQX_DASHBOARD__DEFAULT_PASSWORD: ${EMQX_ADMIN_PASSWORD:-public}
+    ports:
+      - "1884:1883"   # MQTT TCP (Changed from 1883 to avoid collision)
+      - "8083:8083"   # MQTT over WebSocket
+      - "18083:18083" # EMQX Dashboard
+    volumes:
+      - emqx_data:/opt/emqx/data
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: citynet_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+
+  api-service:
+    build:
+      context: ./api-service
+    container_name: citynet_api
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=${POSTGRES_USER:-citynet_admin}
+      - DB_PASSWORD=${POSTGRES_PASSWORD:-citynet_secret}
+      - DB_NAME=${POSTGRES_DB:-citynet_iot}
+      - JWT_SECRET=super_secret_citynet_key_change_me_in_prod
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+      - redis
+    restart: unless-stopped
+
+  mqtt-worker:
+    build:
+      context: ./mqtt-worker
+    container_name: citynet_worker
+    environment:
+      - MQTT_BROKER_URL=mqtt://emqx:1883
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=${POSTGRES_USER:-citynet_admin}
+      - DB_PASSWORD=${POSTGRES_PASSWORD:-citynet_secret}
+      - DB_NAME=${POSTGRES_DB:-citynet_iot}
+    depends_on:
+      - emqx
+      - postgres
+    restart: unless-stopped
+
+  frontend-app:
+    build:
+      context: ./frontend-app
+    container_name: citynet_frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - api-service
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  emqx_data:
+  redis_data:
