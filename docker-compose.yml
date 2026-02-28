@@ -52,7 +52,7 @@ services:
       - DB_NAME=${POSTGRES_DB:-citynet_iot}
       - JWT_SECRET=super_secret_citynet_key_change_me_in_prod
     ports:
-      - "3000:3000"
+      - "3003:3000"
     depends_on:
       - postgres
       - redis
