@@ -1,0 +1,49 @@
+<div class="h-full bg-[var(--sys-surface)] text-[var(--sys-on-surface)] flex flex-col transition-colors duration-300">
+    <main class="flex-1 p-6 lg:p-10 max-w-5xl mx-auto w-full space-y-8">
+        
+        <div>
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Device & Platform Settings</h1>
+            <p class="text-gray-500 dark:text-zinc-400">Manage global configurations for the CityNet IoT ecosystem.</p>
+        </div>
+
+        <div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl overflow-hidden shadow-lg transition-colors">
+            <div class="px-6 py-5 border-b border-gray-200 dark:border-zinc-800 bg-gray-50 dark:bg-zinc-900/50">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Global Edge Configurations</h3>
+            </div>
+            
+            <div class="divide-y divide-gray-100 dark:divide-zinc-800/60">
+                @for (config of configs; track config.property) {
+                <div class="p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-gray-50 dark:hover:bg-zinc-800/20 transition-colors">
+                    <div class="flex-1">
+                        <h4 class="text-gray-900 dark:text-white font-medium mb-1">{{ config.property }}</h4>
+                        <p class="text-sm text-gray-500 dark:text-zinc-400">{{ config.description }}</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="bg-gray-100 dark:bg-zinc-800 px-4 py-2 rounded-lg text-gray-900 dark:text-white font-mono text-sm border border-gray-200 dark:border-zinc-700 min-w-[120px] text-center">
+                            {{ config.value }}
+                        </div>
+                        <button class="p-2 text-gray-500 dark:text-zinc-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors bg-gray-100 dark:bg-zinc-800 rounded-lg border border-gray-200 dark:border-zinc-700 hover:border-emerald-300 dark:hover:border-emerald-500/50" title="Edit">
+                            <span class="material-icons text-[20px]">edit</span>
+                        </button>
+                    </div>
+                </div>
+                }
+            </div>
+        </div>
+
+        <!-- Danger Zone -->
+        <div class="mt-8 bg-red-50 dark:bg-black/40 border border-red-200 dark:border-red-900/40 rounded-2xl p-6 lg:p-8 transition-colors">
+            <h3 class="text-lg font-semibold text-red-600 dark:text-red-500 mb-2">Danger Zone</h3>
+            <p class="text-sm text-red-600/70 dark:text-zinc-400 mb-6">Irreversible actions that affect the entire organization.</p>
+            
+            <div class="flex items-center justify-between p-4 rounded-xl border border-red-200 dark:border-red-900/20 bg-red-100/50 dark:bg-red-950/20">
+                <div>
+                    <h4 class="font-medium text-red-800 dark:text-white mb-1">Purge Telemetry History</h4>
+                    <p class="text-xs text-red-600/60 dark:text-zinc-500">Deletes all timeseries data older than 90 days. This cannot be undone.</p>
+                </div>
+                <button class="px-5 py-2.5 bg-red-100 dark:bg-red-600/10 hover:bg-red-200 dark:hover:bg-red-600/20 text-red-600 dark:text-red-500 border border-red-200 dark:border-red-600/20 rounded-lg text-sm font-medium transition-colors">Purge Data</button>
+            </div>
+        </div>
+        
+    </main>
+</div>

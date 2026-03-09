@@ -1,0 +1,56 @@
+<div class="h-full bg-[var(--sys-surface)] text-[var(--sys-on-surface)] flex flex-col transition-colors duration-300">
+    <main class="flex-1 p-6 lg:p-10 max-w-4xl mx-auto w-full space-y-8">
+        
+        <div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl p-8 shadow-lg relative overflow-hidden transition-colors">
+            <div class="absolute top-0 left-0 w-full h-32 bg-gradient-to-r from-emerald-600/10 to-cyan-600/10 dark:from-emerald-600/20 dark:to-cyan-600/20"></div>
+            
+            <div class="relative z-10 flex flex-col md:flex-row items-start md:items-center gap-6">
+                <div class="h-24 w-24 rounded-full bg-gradient-to-br from-emerald-400 to-cyan-500 flex items-center justify-center text-3xl font-bold text-white shadow-xl ring-4 ring-white dark:ring-zinc-900 border border-emerald-300/30 transition-shadow">
+                    {{ user.name.charAt(0) }}
+                </div>
+                <div class="flex-1">
+                    <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{{ user.name }}</h1>
+                    <p class="text-emerald-600 dark:text-emerald-400 flex items-center gap-2 mt-1">
+                        <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 dark:bg-emerald-400"></span>
+                        {{ user.role }}
+                    </p>
+                </div>
+                <button class="px-6 py-2.5 bg-gray-100 dark:bg-zinc-800 hover:bg-gray-200 dark:hover:bg-zinc-700 text-gray-900 dark:text-white rounded-xl transition-all border border-gray-200 dark:border-zinc-700 font-medium shadow-sm">
+                    Edit Profile
+                </button>
+            </div>
+
+            <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-6 relative z-10">
+                <div class="p-4 rounded-xl bg-gray-50/50 dark:bg-zinc-800/50 border border-gray-200/50 dark:border-zinc-700/50">
+                    <p class="text-sm text-gray-500 dark:text-zinc-400 mb-1">Email Address</p>
+                    <p class="text-gray-900 dark:text-white font-medium">{{ user.email }}</p>
+                </div>
+                <div class="p-4 rounded-xl bg-gray-50/50 dark:bg-zinc-800/50 border border-gray-200/50 dark:border-zinc-700/50">
+                    <p class="text-sm text-gray-500 dark:text-zinc-400 mb-1">Organization</p>
+                    <p class="text-gray-900 dark:text-white font-medium">{{ user.organization }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl p-8 shadow-lg transition-colors">
+            <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6">Security Settings</h2>
+            <div class="space-y-4">
+                <div class="flex items-center justify-between p-4 rounded-xl hover:bg-gray-50 dark:hover:bg-zinc-800/40 transition-colors border border-transparent hover:border-gray-200/50 dark:hover:border-zinc-700/50">
+                    <div>
+                        <h3 class="font-medium text-gray-900 dark:text-white mb-1">Password</h3>
+                        <p class="text-sm text-gray-500 dark:text-zinc-400">Last changed 30 days ago</p>
+                    </div>
+                    <button class="px-4 py-2 bg-gray-100 dark:bg-zinc-800 text-gray-900 dark:text-white border border-gray-200 dark:border-zinc-700 rounded-lg hover:bg-gray-200 dark:hover:bg-zinc-700 text-sm font-medium transition-colors">Update</button>
+                </div>
+                <div class="flex items-center justify-between p-4 rounded-xl hover:bg-gray-50 dark:hover:bg-zinc-800/40 transition-colors border border-transparent hover:border-gray-200/50 dark:hover:border-zinc-700/50">
+                    <div>
+                        <h3 class="font-medium text-gray-900 dark:text-white mb-1">Two-Factor Authentication</h3>
+                        <p class="text-sm text-gray-500 dark:text-zinc-400">Add an extra layer of security</p>
+                    </div>
+                    <button class="px-4 py-2 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/20 rounded-lg hover:bg-emerald-100 dark:hover:bg-emerald-500/20 text-sm font-medium transition-colors">Enable 2FA</button>
+                </div>
+            </div>
+        </div>
+        
+    </main>
+</div>

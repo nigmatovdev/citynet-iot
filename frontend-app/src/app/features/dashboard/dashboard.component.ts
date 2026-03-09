@@ -3,19 +3,22 @@ import { CommonModule } from '@angular/common';
 import { ApiService, Device } from '../../core/services/api.service';
 import { AuthService } from '../../core/services/auth.service';
 import { Router } from '@angular/router';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { DeviceEditDialogComponent } from './device-edit-dialog.component';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartConfiguration, ChartOptions } from 'chart.js';
 
 @Component({
     selector: 'app-dashboard',
     standalone: true,
-    imports: [CommonModule, BaseChartDirective],
+    imports: [CommonModule, BaseChartDirective, MatDialogModule],
     templateUrl: './dashboard.component.html'
 })
 export class DashboardComponent implements OnInit {
     private api = inject(ApiService);
     private auth = inject(AuthService);
     private router = inject(Router);
+    private dialog = inject(MatDialog);
 
     devices = signal<Device[]>([]);
     isLoading = signal(true);
@@ -78,5 +81,40 @@ export class DashboardComponent implements OnInit {
     logout() {
         this.auth.logout();
         this.router.navigate(['/login']);
+    }
+
+    openEditDialog(device: Device) {
+        const dialogRef = this.dialog.open(DeviceEditDialogComponent, {
+            width: '400px',
+            data: device
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                const payload: Partial<Device> = {};
+                if (result.name !== device.name) payload.name = result.name;
+                if (result.address !== device.address) payload.address = result.address;
+                if (result.description !== device.description) payload.description = result.description;
+                if (result.firmware !== device.firmware) payload.firmware = result.firmware;
+                if (result.hardware !== device.hardware) payload.hardware = result.hardware;
+                if (result.latitude !== device.latitude) payload.latitude = Number(result.latitude);
+                if (result.longitude !== device.longitude) payload.longitude = Number(result.longitude);
+                if (result.status !== device.status) payload.status = result.status;
+
+                if (Object.keys(payload).length > 0) {
+                    this.api.updateDevice(device.id, payload).subscribe({
+                        next: (res) => {
+                            if (res.success) {
+                                // Reload table
+                                this.loadDevices();
+                            }
+                        },
+                        error: (err) => {
+                            console.error('Failed to update device:', err);
+                        }
+                    });
+                }
+            }
+        });
     }
 }

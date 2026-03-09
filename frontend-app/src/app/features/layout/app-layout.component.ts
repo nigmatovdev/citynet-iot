@@ -36,6 +36,7 @@ export class AppLayoutComponent {
 
     menuItems = [
         { label: 'Dashboard', icon: 'dashboard', route: '/dashboard' },
+        { label: 'Devices', icon: 'router', route: '/devices' },
         { label: 'Map View', icon: 'map', route: '/map' },
         { label: 'Alert Center', icon: 'notifications', route: '/alerts' },
         { label: 'Settings', icon: 'settings', route: '/settings' }

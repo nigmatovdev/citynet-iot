@@ -52,7 +52,7 @@
                     </div>
                 </button>
                 <mat-menu #userMenu="matMenu" class="mt-2">
-                    <button mat-menu-item>
+                    <button mat-menu-item routerLink="/profile">
                         <mat-icon>person</mat-icon>
                         <span>Profile</span>
                     </button>
@@ -65,7 +65,7 @@
         </mat-toolbar>
 
         <!-- Page Content Router -->
-        <main class="flex-1 overflow-auto p-6 lg:p-8 relative">
+        <main class="flex-1 overflow-auto p-6 lg:p-8 relative flex flex-col [&>*]:flex-1">
             <router-outlet></router-outlet>
         </main>
 

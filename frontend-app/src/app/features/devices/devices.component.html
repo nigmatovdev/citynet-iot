@@ -1,0 +1,160 @@
+<div class="h-full bg-[var(--sys-surface)] text-[var(--sys-on-surface)] flex flex-col transition-colors duration-300">
+    <main class="flex-1 p-6 lg:p-10 max-w-7xl mx-auto w-full space-y-6">
+
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Device Management</h1>
+                <p class="text-gray-500 dark:text-zinc-400">View, register, edit, and remove all IoT edge devices.</p>
+            </div>
+            <button (click)="toggleCreateForm()"
+                class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl transition-all font-medium flex items-center gap-2 shadow-sm">
+                <span class="material-icons text-[20px]">{{ showCreateForm() ? 'close' : 'add' }}</span>
+                {{ showCreateForm() ? 'Cancel' : 'Register Device' }}
+            </button>
+        </div>
+
+        @if(showCreateForm()) {
+        <div
+            class="bg-white dark:bg-zinc-900 border border-emerald-200 dark:border-emerald-900/40 rounded-2xl p-6 shadow-lg mb-6 transition-colors animate-fade-in">
+            <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Register New Device</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-1">Hardware UID /
+                        Serial</label>
+                    <div class="flex rounded-lg shadow-sm">
+                        <span
+                            class="inline-flex items-center px-4 rounded-l-lg border border-r-0 border-gray-300 dark:border-zinc-700 bg-gray-50 dark:bg-zinc-800 text-gray-500 dark:text-zinc-400 font-mono sm:text-sm">
+                            {{ newDevicePrefix }}
+                        </span>
+                        <input [(ngModel)]="newDevice.uid" type="text" placeholder="1029"
+                            class="flex-1 block w-full min-w-0 rounded-none rounded-r-lg border border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-gray-900 dark:text-white px-4 py-2 focus:ring-emerald-500 focus:border-emerald-500 font-mono transition-colors">
+                    </div>
+                    <p class="text-xs text-gray-500 dark:text-zinc-500 mt-1">Required physical ID.</p>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-1">Device Name</label>
+                    <input [(ngModel)]="newDevice.name" type="text" placeholder="e.g. Gateway 1"
+                        class="w-full px-4 py-2 bg-white dark:bg-zinc-900 border border-gray-300 dark:border-zinc-700 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-colors">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-1">Status Override
+                        (Debug)</label>
+                    <select [(ngModel)]="newDevice.status"
+                        class="w-full px-4 py-2 bg-white dark:bg-zinc-900 border border-gray-300 dark:border-zinc-700 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-colors">
+                        <option value="online">Online</option>
+                        <option value="offline">Offline</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-1">Location
+                        Address</label>
+                    <input [(ngModel)]="newDevice.address" type="text" placeholder="e.g. 123 Main St"
+                        class="w-full px-4 py-2 bg-white dark:bg-zinc-900 border border-gray-300 dark:border-zinc-700 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-colors">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-1">Latitude</label>
+                    <input [(ngModel)]="newDevice.latitude" type="number" step="0.000001" placeholder="e.g. 40.7128"
+                        class="w-full px-4 py-2 bg-white dark:bg-zinc-900 border border-gray-300 dark:border-zinc-700 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-colors">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-1">Longitude</label>
+                    <input [(ngModel)]="newDevice.longitude" type="number" step="0.000001" placeholder="e.g. -74.0060"
+                        class="w-full px-4 py-2 bg-white dark:bg-zinc-900 border border-gray-300 dark:border-zinc-700 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-colors">
+                </div>
+            </div>
+
+            <div class="flex justify-end pt-4 border-t border-gray-200 dark:border-zinc-800">
+                <button (click)="createDevice()" [disabled]="!newDevice.uid.trim()"
+                    class="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white rounded-lg transition-colors font-medium">
+                    Complete Registration
+                </button>
+            </div>
+        </div>
+        }
+
+        <div
+            class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl overflow-hidden shadow-lg flex flex-col transition-colors">
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr
+                            class="bg-gray-100 dark:bg-zinc-900/80 text-gray-500 dark:text-zinc-400 text-xs uppercase tracking-wider">
+                            <th class="px-6 py-4 font-medium">Status</th>
+                            <th class="px-6 py-4 font-medium">Device UID</th>
+                            <th class="px-6 py-4 font-medium">Name</th>
+                            <th class="px-6 py-4 font-medium">Address</th>
+                            <th class="px-6 py-4 font-medium">Last Seen</th>
+                            <th class="px-6 py-4 font-medium text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100 dark:divide-zinc-800/60 transition-all text-sm">
+                        @for (device of devices(); track device.id) {
+                        <tr class="hover:bg-gray-50 dark:hover:bg-zinc-800/40 group transition-colors">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                @if(device.status === 'online') {
+                                <span
+                                    class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/20">
+                                    <span
+                                        class="w-2 h-2 mr-1.5 bg-emerald-500 dark:bg-emerald-400 rounded-full animate-pulse"></span>
+                                    Online
+                                </span>
+                                } @else {
+                                <span
+                                    class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 dark:bg-zinc-500/10 text-gray-500 dark:text-zinc-400 border border-gray-200 dark:border-zinc-500/20">
+                                    <span class="w-2 h-2 mr-1.5 bg-gray-400 dark:bg-zinc-400 rounded-full"></span>
+                                    Offline
+                                </span>
+                                }
+                            </td>
+                            <td class="px-6 py-4 text-gray-600 dark:text-zinc-300 font-mono text-xs">{{ device.uid }}
+                            </td>
+                            <td class="px-6 py-4 text-gray-900 dark:text-white font-medium">{{ device.name || '—' }}
+                            </td>
+                            <td class="px-6 py-4 text-gray-600 dark:text-zinc-400 truncate max-w-[200px]">{{
+                                device.address || '—' }}</td>
+                            <td class="px-6 py-4 text-gray-500 dark:text-zinc-400">{{ device.last_seen | date:'MMM d, y,
+                                h:mm a' }}</td>
+                            <td class="px-6 py-4 text-right flex justify-end gap-2">
+                                <button (click)="openEditDialog(device)"
+                                    class="p-2 text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors rounded-lg hover:bg-blue-50 dark:hover:bg-blue-500/10"
+                                    title="Edit">
+                                    <span class="material-icons text-[20px]">edit</span>
+                                </button>
+                                <button (click)="deleteDevice(device.id)"
+                                    class="p-2 text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 transition-colors rounded-lg hover:bg-red-50 dark:hover:bg-red-500/10"
+                                    title="Delete">
+                                    <span class="material-icons text-[20px]">delete</span>
+                                </button>
+                            </td>
+                        </tr>
+                        }
+                        @if(devices().length === 0 && !isLoading()) {
+                        <tr>
+                            <td colspan="6" class="px-6 py-16 text-center text-gray-500 dark:text-zinc-500">
+                                <span class="material-icons text-4xl mb-2 opacity-50">router</span>
+                                <p>No devices found.</p>
+                                <p class="text-xs mt-1">Register a new device above to get started.</p>
+                            </td>
+                        </tr>
+                        }
+                        @if(isLoading()) {
+                        <tr>
+                            <td colspan="6" class="px-6 py-16 text-center text-gray-500">
+                                <p class="animate-pulse">Loading devices...</p>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+</div>

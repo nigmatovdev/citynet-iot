@@ -8,6 +8,12 @@ export interface Device {
     name: string;
     status: string;
     last_seen: string;
+    address?: string | null;
+    description?: string | null;
+    firmware?: string | null;
+    hardware?: string | null;
+    latitude?: string | number | null;
+    longitude?: string | number | null;
     battery_voltage?: number;
     battery_capacity?: number;
 }
@@ -22,6 +28,18 @@ export class ApiService {
 
     getDevices() {
         return this.http.get<{ success: boolean, data: Device[] }>(`${this.apiUrl}/devices`);
+    }
+
+    createDevice(payload: { uid: string, name?: string, address?: string }) {
+        return this.http.post<{ success: boolean, data: Device }>(`${this.apiUrl}/devices`, payload);
+    }
+
+    updateDevice(id: string, payload: Partial<Device>) {
+        return this.http.put<{ success: boolean, data: Device }>(`${this.apiUrl}/devices/${id}`, payload);
+    }
+
+    deleteDevice(id: string) {
+        return this.http.delete<{ success: boolean, message: string }>(`${this.apiUrl}/devices/${id}`);
     }
 
     getDeviceMetrics(uid: string, limit: number = 100) {

@@ -6,14 +6,14 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
             <!-- Total Devices -->
-            <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 relative overflow-hidden group">
+            <div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl p-6 relative overflow-hidden group transition-colors">
                 <div
-                    class="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+                    class="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-transparent dark:from-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity">
                 </div>
                 <div class="flex justify-between items-start relative z-10">
                     <div>
-                        <p class="text-zinc-400 text-sm font-medium mb-1">Total Devices</p>
-                        <h2 class="text-4xl font-bold text-white">{{ totalDevices() }}</h2>
+                        <p class="text-gray-500 dark:text-zinc-400 text-sm font-medium mb-1">Total Devices</p>
+                        <h2 class="text-4xl font-bold text-gray-900 dark:text-white">{{ totalDevices() }}</h2>
                     </div>
                     <div class="p-3 bg-blue-500/10 rounded-xl text-blue-400">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
@@ -26,14 +26,14 @@
             </div>
 
             <!-- Online Devices -->
-            <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 relative overflow-hidden group">
+            <div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl p-6 relative overflow-hidden group transition-colors">
                 <div
-                    class="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+                    class="absolute inset-0 bg-gradient-to-r from-emerald-500/5 to-transparent dark:from-emerald-500/10 opacity-0 group-hover:opacity-100 transition-opacity">
                 </div>
                 <div class="flex justify-between items-start relative z-10">
                     <div>
-                        <p class="text-zinc-400 text-sm font-medium mb-1">Online</p>
-                        <h2 class="text-4xl font-bold text-white">{{ onlineDevices() }}</h2>
+                        <p class="text-gray-500 dark:text-zinc-400 text-sm font-medium mb-1">Online</p>
+                        <h2 class="text-4xl font-bold text-gray-900 dark:text-white">{{ onlineDevices() }}</h2>
                     </div>
                     <div class="p-3 bg-emerald-500/10 rounded-xl text-emerald-400">
                         <div class="h-6 w-6 rounded-full border-2 border-emerald-400 flex items-center justify-center">
@@ -46,14 +46,14 @@
             </div>
 
             <!-- Offline Devices -->
-            <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 relative overflow-hidden group">
+            <div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl p-6 relative overflow-hidden group transition-colors">
                 <div
-                    class="absolute inset-0 bg-gradient-to-r from-red-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+                    class="absolute inset-0 bg-gradient-to-r from-red-500/5 to-transparent dark:from-red-500/10 opacity-0 group-hover:opacity-100 transition-opacity">
                 </div>
                 <div class="flex justify-between items-start relative z-10">
                     <div>
-                        <p class="text-zinc-400 text-sm font-medium mb-1">Offline</p>
-                        <h2 class="text-4xl font-bold text-white">{{ offlineDevices() }}</h2>
+                        <p class="text-gray-500 dark:text-zinc-400 text-sm font-medium mb-1">Offline</p>
+                        <h2 class="text-4xl font-bold text-gray-900 dark:text-white">{{ offlineDevices() }}</h2>
                     </div>
                     <div class="p-3 bg-red-500/10 rounded-xl text-red-500">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
@@ -72,18 +72,18 @@
 
             <!-- Active Devices Table -->
             <div
-                class="lg:col-span-2 bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden shadow-lg flex flex-col">
-                <div class="px-6 py-5 border-b border-zinc-800 flex justify-between items-center bg-zinc-900/50">
-                    <h3 class="text-lg font-semibold text-white">Active RMD Devices</h3>
+                class="lg:col-span-2 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl overflow-hidden shadow-lg flex flex-col transition-colors">
+                <div class="px-6 py-5 border-b border-gray-200 dark:border-zinc-800 flex justify-between items-center bg-gray-50 dark:bg-zinc-900/50">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Active RMD Devices</h3>
                     <button
-                        class="text-sm bg-zinc-800 hover:bg-zinc-700 text-zinc-300 px-4 py-2 rounded-lg transition-colors border border-zinc-700">View
+                        class="text-sm bg-gray-100 dark:bg-zinc-800 hover:bg-gray-200 dark:hover:bg-zinc-700 text-gray-600 dark:text-zinc-300 px-4 py-2 rounded-lg transition-colors border border-gray-200 dark:border-zinc-700">View
                         Map</button>
                 </div>
 
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse">
                         <thead>
-                            <tr class="bg-zinc-900/80 text-zinc-400 text-xs uppercase tracking-wider">
+                            <tr class="bg-gray-100 dark:bg-zinc-900/80 text-gray-500 dark:text-zinc-400 text-xs uppercase tracking-wider">
                                 <th class="px-6 py-4 font-medium">Status</th>
                                 <th class="px-6 py-4 font-medium">Device UID</th>
                                 <th class="px-6 py-4 font-medium">Name</th>
@@ -91,9 +91,9 @@
                                 <th class="px-6 py-4 font-medium text-right">Actions</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-zinc-800/60 transition-all text-sm">
+                        <tbody class="divide-y divide-gray-100 dark:divide-zinc-800/60 transition-all text-sm">
                             @for (device of devices(); track device.id) {
-                            <tr class="hover:bg-zinc-800/40 group cursor-pointer transition-colors">
+                            <tr class="hover:bg-gray-50 dark:hover:bg-zinc-800/40 group transition-colors">
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     @if(device.status === 'online') {
                                     <span
@@ -104,18 +104,20 @@
                                     </span>
                                     } @else {
                                     <span
-                                        class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-zinc-500/10 text-zinc-400 border border-zinc-500/20">
-                                        <span class="w-2 h-2 mr-1.5 bg-zinc-400 rounded-full"></span> Offline
+                                        class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 dark:bg-zinc-500/10 text-gray-500 dark:text-zinc-400 border border-gray-200 dark:border-zinc-500/20">
+                                        <span class="w-2 h-2 mr-1.5 bg-gray-400 dark:bg-zinc-400 rounded-full"></span> Offline
                                     </span>
                                     }
                                 </td>
-                                <td class="px-6 py-4 text-zinc-300 font-mono text-xs">{{ device.uid }}</td>
-                                <td class="px-6 py-4 text-white font-medium">{{ device.name || 'Unnamed Device' }}</td>
-                                <td class="px-6 py-4 text-zinc-400">{{ device.last_seen | date:'MMM d, y, h:mm:ss a' }}
+                                <td class="px-6 py-4 text-gray-600 dark:text-zinc-300 font-mono text-xs">{{ device.uid }}</td>
+                                <td class="px-6 py-4 text-gray-900 dark:text-white font-medium">{{ device.name || 'Unnamed Device' }}</td>
+                                <td class="px-6 py-4 text-gray-500 dark:text-zinc-400">{{ device.last_seen | date:'MMM d, y, h:mm:ss a' }}
                                 </td>
-                                <td class="px-6 py-4 text-right">
+                                <td class="px-6 py-4 text-right flex justify-end gap-3">
+                                    <button (click)="openEditDialog(device)"
+                                        class="text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 transition-colors font-medium">Edit</button>
                                     <button
-                                        class="text-emerald-400 hover:text-emerald-300 transition-colors font-medium">Details
+                                        class="text-emerald-500 hover:text-emerald-600 dark:text-emerald-400 dark:hover:text-emerald-300 transition-colors font-medium">Details
                                         →</button>
                                 </td>
                             </tr>
@@ -133,9 +135,9 @@
             </div>
 
             <!-- Device Status Chart -->
-            <div class="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden shadow-lg flex flex-col">
-                <div class="px-6 py-5 border-b border-zinc-800 flex justify-between items-center bg-zinc-900/50">
-                    <h3 class="text-lg font-semibold text-white">Status Overview</h3>
+            <div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl overflow-hidden shadow-lg flex flex-col transition-colors">
+                <div class="px-6 py-5 border-b border-gray-200 dark:border-zinc-800 flex justify-between items-center bg-gray-50 dark:bg-zinc-900/50">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Status Overview</h3>
                 </div>
                 <div class="p-6 flex-1 flex items-center justify-center min-h-[300px] relative">
                     <canvas baseChart [data]="pieChartData()" [options]="pieChartOptions" [type]="'pie'">
