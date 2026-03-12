@@ -84,7 +84,7 @@ export async function PUT(request, { params }) {
         const body = await request.json();
 
         // Allowed fields for update
-        const allowedFields = ['name', 'latitude', 'longitude', 'address', 'firmware', 'hardware', 'status'];
+        const allowedFields = ['name', 'latitude', 'longitude', 'address', 'firmware', 'hardware', 'status', 'battery_capacity', 'battery_voltage', 'last_seen'];
         const updates = [];
         const values = [];
         let paramIndex = 1;

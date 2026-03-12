@@ -21,6 +21,12 @@ export class MapComponent implements OnInit, OnDestroy {
   defaultCenter: [number, number] = [69.2401, 41.2995]; // Tashkent
 
   devices = signal<Device[]>([]);
+  currentFilter = signal<'all' | 'online' | 'offline'>('all');
+
+  setFilter(filter: 'all' | 'online' | 'offline') {
+    this.currentFilter.set(filter);
+    this.drawDeviceMarkers();
+  }
 
   ngOnInit() {
     console.log('MapComponent initializing...');
@@ -33,8 +39,8 @@ export class MapComponent implements OnInit, OnDestroy {
       // Sometimes map canvas sizes to 0 if container is drawn late in Angular. Force recalculation.
       setTimeout(() => this.map.resize(), 100);
 
-      // For now, only show user location and do not load devices
-      // this.loadDevices();
+      // Load devices and plot them
+      this.loadDevices();
       this.findMyLocation();
     });
   }
@@ -98,36 +104,67 @@ export class MapComponent implements OnInit, OnDestroy {
     let hasValidPins = false;
 
     this.devices().forEach(device => {
-      // Coerce to number since JS may infer string from JSON payload 
-      const lat = Number(device.latitude);
-      const lng = Number(device.longitude);
+      // Apply active filter
+      const filter = this.currentFilter();
+      if (filter !== 'all' && device.status !== filter) {
+        return; // skip this device
+      }
 
-      if (!isNaN(lat) && !isNaN(lng) && lat !== 0 && lng !== 0) {
-        hasValidPins = true;
+      // Check if coordinates exist before parsing, because Number(null) or Number("") evaluates to 0
+      if (device.latitude !== null && device.latitude !== undefined && device.latitude !== '' &&
+        device.longitude !== null && device.longitude !== undefined && device.longitude !== '') {
 
-        // Define marker styling based on online/offline
-        const color = device.status === 'online' ? '#10b981' : '#ef4444';
+        const lat = Number(device.latitude);
+        const lng = Number(device.longitude);
 
-        const popupDetails = `
+        // Filter out strict 0,0 locations which are usually defaults for unplaced devices
+        if (!isNaN(lat) && !isNaN(lng) && !(lat === 0 && lng === 0)) {
+          hasValidPins = true;
+
+          // Define marker styling based on online/offline
+          const color = device.status === 'online' ? '#10b981' : '#ef4444';
+
+          const popupDetails = `
           <div class="px-2 py-1">
             <h3 style="margin: 0; font-weight: bold; font-family: ui-sans-serif, system-ui;">${device.name || device.uid}</h3>
             <p style="margin: 4px 0 0 0; color: #6b7280; font-family: ui-sans-serif, system-ui; font-size: 13px;">${device.address || 'Unknown'}</p>
           </div>
         `;
 
-        const popup = new maplibregl.Popup({ offset: 25, className: 'iot-popup' }).setHTML(popupDetails);
-        const marker = new maplibregl.Marker({ color })
-          .setLngLat([lng, lat])
-          .setPopup(popup)
-          .addTo(this.map);
+          const popup = new maplibregl.Popup({ offset: 25, className: 'iot-popup' }).setHTML(popupDetails);
+          const marker = new maplibregl.Marker({ color })
+            .setLngLat([lng, lat])
+            .setPopup(popup)
+            .addTo(this.map);
 
-        this.markers.push(marker);
-        bounds.extend([lng, lat]);
+          this.markers.push(marker);
+          bounds.extend([lng, lat]);
+        }
       }
     });
 
     if (hasValidPins) {
-      this.map.fitBounds(bounds, { padding: 50, maxZoom: 15 });
+      // Intentionally not fitting bounds to all devices, as requested
+      // this.map.fitBounds(bounds, { padding: 50, maxZoom: 15, duration: 0 });
+    } else {
+      // Add a fallback test device marker if the database is empty right now
+      const testLat = 41.2995;
+      const testLng = 69.2401;
+
+      const popup = new maplibregl.Popup({ offset: 25, className: 'iot-popup' }).setHTML(`
+        <div class="px-2 py-1">
+          <h3 style="margin: 0; font-weight: bold; font-family: ui-sans-serif, system-ui;">Test Device (Tashkent)</h3>
+          <p style="margin: 4px 0 0 0; color: #6b7280; font-family: ui-sans-serif, system-ui; font-size: 13px;">No API data found</p>
+        </div>
+      `);
+
+      new maplibregl.Marker({ color: '#f59e0b' }) // amber color for test
+        .setLngLat([testLng, testLat])
+        .setPopup(popup)
+        .addTo(this.map);
+
+      // Intentionally not fitting bounds to test device either
+      // this.map.fitBounds(new maplibregl.LngLatBounds([testLng, testLat], [testLng, testLat]), { padding: 50, maxZoom: 14, duration: 0 });
     }
   }
 

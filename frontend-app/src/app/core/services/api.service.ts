@@ -44,7 +44,11 @@ export class ApiService {
 
     getDeviceMetrics(uid: string, limit: number = 100) {
         return this.http.get<{ success: boolean, data: { device: Device, metrics: any[] } }>(
-            `${this.apiUrl}/devices/${uid}?limit=${limit}`
+            `${this.apiUrl}/devices/${uid}/metrics?limit=${limit}`
         );
+    }
+
+    getGlobalMetrics(limit: number = 500) {
+        return this.http.get<{ success: boolean, data: any[] }>(`${this.apiUrl}/metrics?limit=${limit}`);
     }
 }

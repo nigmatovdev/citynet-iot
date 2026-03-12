@@ -111,11 +111,11 @@ export async function POST(request) {
         const orgIdToUse = organization_id || '00000000-0000-0000-0000-000000000000'; // Default org
 
         const dbQuery = `
-            INSERT INTO devices (uid, name, organization_id, latitude, longitude, address, firmware, hardware, status, last_seen)
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+            INSERT INTO devices (uid, name, organization_id, latitude, longitude, address, firmware, hardware, status, last_seen, battery_capacity, battery_voltage)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
             RETURNING *
         `;
-        const params = [uid, name, orgIdToUse, latitude, longitude, address, firmware, hardware, status || 'offline', last_seen || null];
+        const params = [uid, name, orgIdToUse, latitude, longitude, address, firmware, hardware, status || 'offline', last_seen || null, body.battery_capacity || null, body.battery_voltage || null];
 
         const { rows } = await query(dbQuery, params);
         return NextResponse.json({ success: true, data: rows[0] }, { status: 201 });

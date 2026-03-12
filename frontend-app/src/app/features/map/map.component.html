@@ -9,11 +9,38 @@
                 deployments</p>
         </div>
 
-        <button (click)="findMyLocation()"
-            class="mr-6 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-lg pointer-events-auto flex items-center gap-2 font-medium transition-colors">
-            <span class="material-icons text-[20px]">my_location</span>
-            Find My Location
-        </button>
+        <div class="flex items-center gap-3">
+            <div
+                class="bg-white/90 dark:bg-zinc-900/90 backdrop-blur border border-gray-200 dark:border-zinc-800 rounded-xl p-1 shadow-lg pointer-events-auto flex font-medium text-sm transition-colors">
+                <button (click)="setFilter('all')" [class.bg-gray-100]="currentFilter() === 'all'"
+                    [class.dark:bg-zinc-800]="currentFilter() === 'all'"
+                    class="px-4 py-1.5 rounded-lg transition-colors hover:bg-gray-50 dark:hover:bg-zinc-800/50">
+                    All
+                </button>
+                <button (click)="setFilter('online')" [class.bg-emerald-50]="currentFilter() === 'online'"
+                    [class.dark:bg-emerald-900/40]="currentFilter() === 'online'"
+                    [class.text-emerald-600]="currentFilter() === 'online'"
+                    [class.dark:text-emerald-400]="currentFilter() === 'online'"
+                    class="px-4 py-1.5 rounded-lg transition-colors hover:bg-gray-50 dark:hover:bg-zinc-800/50 flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                    Online
+                </button>
+                <button (click)="setFilter('offline')" [class.bg-red-50]="currentFilter() === 'offline'"
+                    [class.dark:bg-red-900/40]="currentFilter() === 'offline'"
+                    [class.text-red-600]="currentFilter() === 'offline'"
+                    [class.dark:text-red-400]="currentFilter() === 'offline'"
+                    class="px-4 py-1.5 rounded-lg transition-colors hover:bg-gray-50 dark:hover:bg-zinc-800/50 flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-red-500"></span>
+                    Offline
+                </button>
+            </div>
+
+            <button (click)="findMyLocation()"
+                class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-lg pointer-events-auto flex items-center gap-2 font-medium transition-colors">
+                <span class="material-icons text-[20px]">my_location</span>
+                Find My Location
+            </button>
+        </div>
     </div>
 
     <!-- Map Canvas -->
